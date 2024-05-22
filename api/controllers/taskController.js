@@ -13,7 +13,7 @@ export const createTask = async (req, res) => {
     const board = await Board.findById(req.body.board);
     board.tasks.push(task);
     await board.save();
-    res.status(201).send(task);
+    res.status(201).send({ success: true, message: 'Task created successfully', task });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -28,7 +28,7 @@ export const deleteTask = async (req, res) => {
     const board = await Board.findById(task.board);
     board.tasks.pull(task);
     await board.save();
-    res.send(task);
+    res.send({ success: true, message: 'Task deleted successfully', task });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -40,7 +40,7 @@ export const updateTask = async (req, res) => {
     if (!task) {
       return res.status(404).send();
     }
-    res.send(task);
+    res.send({ success: true, message: 'Task updated successfully', task });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -52,7 +52,7 @@ export const listTasks = async (req, res) => {
     if (!board) {
       return res.status(404).send();
     }
-    res.send(board.tasks);
+    res.send({ success: true, message: 'Tasks fetched successfully', tasks: board.tasks });
   } catch (error) {
     res.status(500).send(error);
   }
