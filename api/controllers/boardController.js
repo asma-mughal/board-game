@@ -24,10 +24,13 @@ export const deleteBoard = async (req, res) => {
   }
 };
 
-export const listBoards = async (req, res) => {
+export const listTasks = async (req, res) => {
   try {
-    const boards = await Board.find();
-    res.send(boards);
+    const board = await Board.findById(req.params.boardId).populate('tasks');
+    if (!board) {
+      return res.status(404).send();
+    }
+    res.send(board.tasks);
   } catch (error) {
     res.status(500).send(error);
   }
