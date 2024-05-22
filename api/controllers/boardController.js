@@ -26,7 +26,7 @@ export const deleteBoard = async (req, res) => {
 
 export const listBoards = async (req, res) => {
   try {
-    const boards = await Board.find();
+    const boards = await Board.find().populate('tasks');
     res.send(boards);
   } catch (error) {
     res.status(500).send(error);
