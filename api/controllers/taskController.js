@@ -7,7 +7,8 @@ export const createTask = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       dueDate: req.body.dueDate,
-      board: req.body.board
+      board: req.body.board,
+      createdBy: req.body.userId // Assuming userId is the unique identifier of the user
     });
     await task.save();
     const board = await Board.findById(req.body.board);
@@ -57,5 +58,16 @@ export const listTasks = async (req, res) => {
     res.send({ success: true, message: 'Tasks fetched successfully', tasks: board.tasks });
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+export const listTasksForuser = async (req, res) => {
+  try {
+    console.log(req.params.userId)
+    const tasks = await Task.find({ createdBy: req.params.userId }).populate('board');
+    console.log(tasks, "hellow")
+    res.send({ success: true, message: 'Tasks fetched successfully', tasks });
+  } catch (error) {
+    res.status(500).send({ success: false, error: error.message });
   }
 };
