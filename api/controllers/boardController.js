@@ -3,7 +3,11 @@ import Task from '../models/task.js';
 
 export const createBoard = async (req, res) => {
   try {
-    const board = new Board({ name: req.body.name });
+    const { name, userId } = req.body; // Assuming userId is passed from the client
+    const board = new Board({ 
+      name: name,
+      createdBy: userId // Assuming userId is the unique identifier of the user
+    });
     await board.save();
     res.status(201).send({ success: true, message: 'Board created successfully', board });
   } catch (error) {
