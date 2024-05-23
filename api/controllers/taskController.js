@@ -15,6 +15,7 @@ export const createTask = async (req, res) => {
     await board.save();
     res.status(201).send({ success: true, message: 'Task created successfully', task });
   } catch (error) {
+    console.log(error)
     res.status(400).send(error);
   }
 };
@@ -48,6 +49,7 @@ export const updateTask = async (req, res) => {
 
 export const listTasks = async (req, res) => {
   try {
+    
     const board = await Board.findById(req.params.boardId).populate('tasks');
     if (!board) {
       return res.status(404).send();

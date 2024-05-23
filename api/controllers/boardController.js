@@ -4,6 +4,7 @@ import Task from '../models/task.js';
 export const createBoard = async (req, res) => {
   try {
     const { name, userId } = req.body; // Assuming userId is passed from the client
+  
     const board = new Board({ 
       name: name,
       createdBy: userId // Assuming userId is the unique identifier of the user
@@ -32,6 +33,17 @@ export const listBoards = async (req, res) => {
   try {
     const boards = await Board.find().populate('tasks');
     res.send({ success: true, message: 'Boards fetched successfully', boards });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+export const listBoardsForUser = async (req, res) => {
+
+  try {
+    const userId = req.params.userId;
+    const boards = await Board.find({ createdBy: userId }).populate('tasks');
+    
+    res.send({ success: true, message: 'Boards fetched successfully for the user', boards });
   } catch (error) {
     res.status(500).send(error);
   }
